@@ -175,9 +175,10 @@ namespace where_and_how
             {
                 if (albums[i].getAlbumId() == id)
                 {
+                    singers[albums[i].getSingerId()].removeAlbum(albums[i]);
                     albums.RemoveAt(i);
                     return true;
-                } 
+                }
             }
             return false;
         }
@@ -191,6 +192,7 @@ namespace where_and_how
             {
                 if (musics[i].getMusicId() == id)
                 {
+                    albums[musics[i].getAlbumId()].removeMusic(musics[i]);
                     musics.RemoveAt(i);
                     return true;
                 }

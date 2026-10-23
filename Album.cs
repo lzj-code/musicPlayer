@@ -9,19 +9,21 @@ namespace where_and_how
     internal class Album
     {
         static int globalAlbumId = 0;
-        int albumId;
-        String albumName;
-        String albumImagePath;
-        String albumDescription;
-        String singerName;
+        private int albumId;
+        private int SingerId;
+        private String albumName;
+        private String albumImagePath;
+        private String albumDescription;
+        private String singerName;
         List<Music> musics;
-        public Album(String albumName="", String albumDescription = "", String albumImagePath = "", String singerName= "")
+        public Album(String albumName="", String albumDescription = "", String albumImagePath = "", String singerName= "",int SingerId=0)
         {
             this.albumId = globalAlbumId++;
             this.albumName =albumName;
             this.albumDescription =albumDescription;
             this.musics = new List<Music>();
             this.singerName=singerName;
+            this.SingerId = SingerId;
         }
         public void appendMusic(Music music)
         {
@@ -40,6 +42,7 @@ namespace where_and_how
             return singerName;
         }
         public int getAlbumId() { return albumId; }
+        public int getSingerId() { return SingerId; }
         public List<Music> getMusics() { return musics; }
         public void setAlbumName(String albumName) { this.albumName = albumName; }
         public void setImagePath(String path) { this.albumImagePath = path; }
@@ -55,6 +58,10 @@ namespace where_and_how
         {
             this.albumId = id;    
             globalAlbumId = id+1;
+        }
+        public void setSingerID(int id)
+        {
+            this.SingerId = id;
         }
     }
 }

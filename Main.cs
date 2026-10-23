@@ -37,11 +37,7 @@ namespace where_and_how
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(textBox1.Text.Trim()=="")
-            {
-                MessageBox.Show("请先输入文本！");
-                return;
-            }
+            
             String keyword= textBox1.Text.Trim();
             if (checkedListBox1.CheckedItems.Count == 0)
             {
@@ -107,6 +103,7 @@ namespace where_and_how
             if (musicDescription == "")
                 musicDescription = "无音乐描述";
             int albumId=(int)AlbumID.Value;
+            music.setAlbumID(albumId);
             MessageBox.Show(musicName + musicAuthor+ musicDescription+"专辑编号："+albumId);
             openFileDialog1=new OpenFileDialog();
             openFileDialog1.ShowDialog(this);
@@ -148,6 +145,7 @@ namespace where_and_how
             if (albumDescription == "")
                 albumDescription = "无相关描述";
             int sno=(int)singerNumericUpDown.Value;
+            album.setSingerID(sno);
             album.setAlbumName(albumName);
             album.setAlbumDescription(albumDescription);
             album.setSingerName(library.getSingerNameById(sno));
@@ -260,16 +258,25 @@ namespace where_and_how
                 int idx = i;
                 SearchContextMenuStrip.Items[idx].Click += (a, b) =>
                 {
-                    DialogResult d=MessageBox.Show("要查看" + SearchContextMenuStrip.Items[idx].Name + "的详情吗？", "彳   亍", MessageBoxButtons.YesNoCancel);
+                    DialogResult d=MessageBox.Show("要查看" + albums[ids[idx]].getAlbumName() + "的详情吗？", "彳   亍", MessageBoxButtons.YesNoCancel);
                     if (d == DialogResult.Yes)
                     {
                         MessageBox.Show("专辑ID：" + albums[ids[idx]].getAlbumId() + "\n" +
                                         "专辑名：" + albums[ids[idx]].getAlbumName() + "\n" +
                                         "专辑描述：" + albums[ids[idx]].getAlbumDescription() + "\n" +
                                         "专辑图片地址：" + albums[ids[idx]].getImagePath()
-                            );    
+                            );
+                    }
+                    else
+                    {
+                        d = MessageBox.Show("要删除专辑" + albums[ids[idx]].getAlbumName() + "吗？", "毁灭性的", MessageBoxButtons.YesNoCancel);
+                        if (d == DialogResult.Yes)
+                        {
+                            library.removeAlbumsById(albums[ids[idx]].getAlbumId());
+                        }
                     }
                 };
+                
             }
         }
         private void SearchContextMenuStrip2Opening()//歌手
@@ -288,13 +295,21 @@ namespace where_and_how
                 int idx = i;
                 SearchContextMenuStrip2.Items[idx].Click += (a, b) =>
                 {
-                    DialogResult d = MessageBox.Show("要查看" + SearchContextMenuStrip2.Items[idx].Name + "的详情吗？", "彳   亍", MessageBoxButtons.YesNoCancel);
+                    DialogResult d = MessageBox.Show("要查看" + singers[ids[idx]].getName() + "的详情吗？", "彳   亍", MessageBoxButtons.YesNoCancel);
                     if (d == DialogResult.Yes)
                     {
                         MessageBox.Show("歌手ID：" + singers[ids[idx]].getSingerId() + "\n" +
                                         "歌手名：" + singers[ids[idx]].getName() + "\n" +
                                         "歌手描述：" + singers[ids[idx]].getDescription() + "\n"
                             );
+                    }
+                    else
+                    {
+                        d = MessageBox.Show("要删除歌手" + singers[ids[idx]].getName() + "吗？", "毁灭性的", MessageBoxButtons.YesNoCancel);
+                        if (d == DialogResult.Yes)
+                        {
+                            library.removeSingerById(singers[ids[idx]].getSingerId());
+                        }
                     }
                 };
             }
@@ -315,7 +330,7 @@ namespace where_and_how
                 int idx = i;
                 SearchContextMenuStrip3.Items[idx].Click += (a, b) =>
                 {
-                    DialogResult d = MessageBox.Show("要查看" + SearchContextMenuStrip3.Items[idx].Name + "的详情吗？", "彳   亍", MessageBoxButtons.YesNoCancel);
+                    DialogResult d = MessageBox.Show("要查看" + musics[ids[idx]].getMusicName() + "的详情吗？", "彳   亍", MessageBoxButtons.YesNoCancel);
                     if (d == DialogResult.Yes)
                     {
                         MessageBox.Show("音乐ID：" + musics[ids[idx]].getMusicId() + "\n" +
@@ -324,6 +339,14 @@ namespace where_and_how
                                         "歌手：" + musics[ids[idx]].getMusicAuthor() + "\n" +
                                         "音乐路径：" + musics[ids[idx]].getMp3PAth()
                             );
+                    }
+                    else
+                    {
+                        d = MessageBox.Show("要删除音乐" + musics[ids[idx]].getMusicName() + "吗？", "毁灭性的", MessageBoxButtons.YesNoCancel);
+                        if (d == DialogResult.Yes)
+                        {
+                            library.removeMusicById(musics[ids[idx]].getMusicId());
+                        }
                     }
                 };
             }
